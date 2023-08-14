@@ -1,0 +1,28 @@
+spring:
+  cloud:
+    function:
+      definition: uppercase
+    stream:
+      bindings:
+        uppercase-in-0:
+          destination: queue.log.messages
+          binder: rabbit
+        uppercase-out-0:
+          destination: queue.pretty.log.messages
+          binder: kafka
+      binders:
+        rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: localhost
+                post: 5672
+                username: guest
+                password: guest
+                virtual-host: /
+        kafka:
+          type: kstream
+          environment:
+            spring.cloud.stream.kafka.binder:
+              brokers: localhost:9092
